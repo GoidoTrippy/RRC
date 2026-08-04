@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>Feliz Cumpleaños · Romi</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500&family=Quicksand:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --swamp-dark:#0c2118;
+    --swamp:#173b28;
+    --swamp-light:#255a3d;
+    --gold:#d9b46a;
+    --gold-light:#f2dfae;
+    --gold-deep:#b98f3f;
+    --cream:#faf4e6;
+    --nola-purple:#5a3d7a;
+    --nola-teal:#1f6b5e;
+    --ink:#0c2118;
+    --danger:#d97a6a;
+    --shadow: 0 10px 30px rgba(0,0,0,.35);
+  }
+  *{ box-sizing:border-box; -webkit-tap-highlight-color: transparent; }
+  html{ scroll-behavior:smooth; -webkit-text-size-adjust:100%; }
+  body{
+    margin:0;
+    font-family:'Quicksand',sans-serif;
+    background: linear-gradient(180deg, var(--swamp-dark), var(--swamp) 50%, var(--swamp-dark));
+    color:var(--cream);
+    overflow-x:hidden;
+    touch-action: pan-y;
+  }
+  ::selection{ background:var(--gold); color:var(--swamp-dark); }
+  h1,h2,h3{ font-family:'Playfair Display',serif; margin:0; }
+  .script{ font-family:'Great Vibes', cursive; color:var(--gold-light); line-height:1.1; }
+
+  button, .tappable{ touch-action: manipulation; -webkit-user-select:none; user-select:none; }
+  input{ font-size:16px; }
+
+  section{
+    position:relative; width:100%; min-height:100vh; min-height:100svh;
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    padding: 70px 20px; text-align:center; overflow:hidden;
+  }
+
+  /* ---------- decorative fireflies ambient ---------- */
+  .fireflies{ position:absolute; inset:0; pointer-events:none; overflow:hidden; }
+  .firefly{
+    position:absolute; width:6px; height:6px; border-radius:50%;
+    background:var(--gold-light); box-shadow:0 0 8px 3px rgba(242,223,174,0.8);
+    opacity:0; animation: drift 9s ease-in-out infinite, glow 2.6s ease-in-out infinite;
+  }
+  @keyframes drift{
+    0%{ transform:translate(0,20px) scale(0.8); opacity:0;}
+    15%{opacity:1;} 50%{ transform:translate(20px,-60px) scale(1.1);} 85%{opacity:1;}
+    100%{ transform:translate(-15px,-140px) scale(0.7); opacity:0;}
+  }
+  @keyframes glow{ 0%,100%{filter:brightness(0.8);} 50%{filter:brightness(1.6);} }
+
+  .lilypad{ position:absolute; opacity:0.85; filter:drop-shadow(0 6px 10px rgba(0,0,0,.35)); animation: sway 6s ease-in-out infinite; }
+  @keyframes sway{ 0%,100%{transform:rotate(-2deg);} 50%{transform:rotate(2deg);} }
+
+  /* ---------- wrought-iron French Quarter flourish ---------- */
+  .iron-divider{ width:140px; opacity:.55; margin: 6px auto 26px; }
+
+  /* ---------- cover ---------- */
+  #cover{
+    position:fixed; inset:0; z-index:50; cursor:pointer;
+    display:flex; align-items:center; justify-content:center; flex-direction:column;
+    background: radial-gradient(ellipse at 50% 30%, rgba(37,90,61,0.3), transparent 60%), var(--swamp-dark);
+    padding:24px; text-align:center;
+  }
+  .seal{
+    width:120px; height:120px; border-radius:50%; margin-bottom:20px;
+    background: radial-gradient(circle at 35% 30%, var(--gold-light), var(--gold) 55%, var(--gold-deep) 100%);
+    display:flex; align-items:center; justify-content:center;
+    box-shadow: 0 0 0 6px rgba(217,180,106,0.18), 0 12px 30px rgba(0,0,0,.5);
+    animation: pulse 2.6s ease-in-out infinite;
+    font-size:46px;
+  }
+  @keyframes pulse{ 0%,100%{ transform:scale(1);} 50%{ transform:scale(1.05);} }
+  .cover-title{ font-size:14px; letter-spacing:2px; text-transform:uppercase; color:var(--cream); opacity:.65; margin-bottom:8px; }
+  .tap-text{ letter-spacing:3px; text-transform:uppercase; font-size:12px; color:var(--gold-light); opacity:.85; margin-top:6px; }
+
+  #app{ display:none; }
+  body.opened #app{ display:block; }
+  body.opened #cover{ display:none; }
+
+  .confetti-piece{ position:fixed; top:-10px; z-index:999; animation: fall linear forwards; pointer-events:none; }
+  .confetti-piece.shape{ width:10px; height:14px; opacity:0.95; }
+  .confetti-piece.emoji{ font-size:26px; }
+  @keyframes fall{ to{ transform: translateY(110vh) rotate(540deg); opacity:0; } }
+
+  /* ---------- hero ---------- */
+  #hero{ padding-top:100px; }
+  .crown-top{ width:60px; margin-bottom:6px; filter: drop-shadow(0 4px 10px rgba(0,0,0,.4)); animation: floaty 4s ease-in-out infinite; }
+  @keyframes floaty{ 0%,100%{transform:translateY(0);} 50%{transform:translateY(-8px);} }
+  .eyebrow{ font-size:13px; letter-spacing:4px; text-transform:uppercase; color:var(--gold-light); opacity:.85; margin-bottom:14px; }
+  .name-script{ font-size: clamp(52px, 13vw, 92px); margin-bottom:4px; }
+  .big-number{
+    font-size: clamp(120px, 30vw, 200px); font-weight:700; margin: 10px 0;
+    background: linear-gradient(180deg, var(--gold-light), var(--gold) 45%, var(--gold-deep));
+    -webkit-background-clip:text; background-clip:text; color:transparent; line-height:0.85;
+    filter: drop-shadow(0 6px 18px rgba(0,0,0,.45));
+  }
+  .hero-sub{ max-width:480px; font-size:17px; line-height:1.7; opacity:.9; margin-top:8px; }
+  .scroll-cue{ margin-top:44px; font-size:12px; letter-spacing:2px; text-transform:uppercase; color:var(--gold-light); opacity:.7; display:flex; flex-direction:column; align-items:center; gap:8px; }
+  .chevron{ animation: bounce 1.8s ease-in-out infinite; font-size:16px; }
+  @keyframes bounce{ 0%,100%{transform:translateY(0); opacity:.5;} 50%{transform:translateY(6px); opacity:1;} }
+
+  .reveal{ opacity:0; transform: translateY(28px); transition: all .9s cubic-bezier(.2,.7,.2,1); }
+  .reveal.in{ opacity:1; transform:translateY(0); }
+
+  .section-title{ font-size: clamp(24px,5vw,34px); color:var(--gold-light); margin-bottom:8px; }
+  .section-sub{ opacity:.8; font-size:15px; max-width:440px; margin-bottom:28px; }
+
+  /* ---------- countdown ---------- */
+  .clock{ display:flex; gap:14px; flex-wrap:wrap; justify-content:center; }
+  .clock .box{ width:76px; background: linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02)); border:1px solid rgba(217,180,106,0.35); border-radius:16px; padding:16px 4px; }
+  .clock .num{ font-family:'Playfair Display',serif; font-size:32px; font-weight:700; color:var(--gold-light); }
+  .clock .lbl{ font-size:10px; letter-spacing:1.5px; text-transform:uppercase; opacity:.7; margin-top:4px; }
+  .countdown-done{ font-family:'Playfair Display',serif; font-size: clamp(22px,5vw,32px); color:var(--gold-light); display:none; }
+
+  /* ---------- hoy es el día ---------- */
+  .today-badge{ display:flex; flex-direction:column; align-items:center; margin-bottom:26px; }
+  .today-emoji{ font-size:56px; animation: todayPulse 2.2s ease-in-out infinite; filter: drop-shadow(0 6px 14px rgba(0,0,0,.4)); }
+  @keyframes todayPulse{ 0%,100%{ transform:scale(1) rotate(-2deg);} 50%{ transform:scale(1.12) rotate(2deg);} }
+  .today-text{ font-family:'Playfair Display',serif; font-style:italic; font-size: clamp(18px,4.4vw,24px); color:var(--gold-light); margin-top:10px; }
+  .elapsed-caption{ font-size:12px; letter-spacing:1.5px; text-transform:uppercase; opacity:.65; margin-top:12px; }
+  .confetti-btn{
+    margin-top:28px; padding:14px 30px; border-radius:40px; border:1px solid var(--gold);
+    background: linear-gradient(180deg, var(--gold-light), var(--gold) 60%, var(--gold-deep));
+    color:var(--swamp-dark); font-family:'Quicksand',sans-serif; font-weight:700; font-size:14px;
+    letter-spacing:1px; cursor:pointer; box-shadow: var(--shadow); touch-action:manipulation;
+  }
+  .confetti-btn:active{ transform:scale(0.96); }
+
+  /* ---------- tiana's palace menu ---------- */
+  .menu-card{
+    max-width:560px; background: linear-gradient(180deg, rgba(250,244,230,0.97), rgba(250,244,230,0.94));
+    color:var(--ink); border-radius:14px; padding:0; box-shadow:var(--shadow);
+    position:relative; border:2px solid var(--gold-deep); overflow:hidden;
+  }
+  .menu-header{
+    background: linear-gradient(180deg, var(--swamp), var(--swamp-dark));
+    padding:22px 20px 18px; border-bottom:3px double var(--gold);
+  }
+  .menu-header .est{ font-size:11px; letter-spacing:3px; text-transform:uppercase; color:var(--gold-light); opacity:.75; }
+  .menu-header h2{ font-size: clamp(24px,5.5vw,30px); color:var(--gold-light); margin:6px 0 2px; }
+  .menu-header .sub{ font-size:11px; letter-spacing:2px; text-transform:uppercase; color:var(--cream); opacity:.6; }
+  .menu-body{ padding:34px 30px 38px; }
+  .menu-body p{ font-family:'Playfair Display',serif; font-style:italic; font-size: clamp(15.5px,3.6vw,18px); line-height:1.85; margin:0; color:#26332c; }
+  .menu-sign{ margin-top:22px; font-family:'Great Vibes', cursive; font-size:28px; color:var(--gold-deep); }
+
+  /* ---------- la broma del sapo ---------- */
+  .pond-scene{ position:relative; width:min(90vw,300px); height:220px; display:flex; align-items:center; justify-content:center; }
+  .water{ position:absolute; inset:0; border-radius:50%; background: radial-gradient(ellipse at 50% 40%, rgba(37,90,61,0.55), rgba(12,33,24,0.9) 75%); box-shadow: inset 0 0 40px rgba(0,0,0,0.5); }
+  .frog-pad{
+    position:relative; z-index:5; width:120px; height:120px; cursor:pointer; touch-action:manipulation;
+    display:flex; align-items:center; justify-content:center; font-size:64px;
+    -webkit-user-select:none; user-select:none;
+  }
+  .frog-pad.jump{ animation: frogJump 0.5s ease; }
+  @keyframes frogJump{ 0%{transform:translateY(0);} 30%{transform:translateY(-26px) rotate(-8deg);} 55%{transform:translateY(-10px) rotate(6deg);} 100%{transform:translateY(0);} }
+  .pond-hint{ margin-top:20px; font-size:14px; opacity:.8; max-width:320px; }
+
+  /* ---------- louis easter egg ---------- */
+  #louisBtn{
+    position:fixed; bottom:20px; left:20px; z-index:55; width:52px; height:52px; border-radius:50%;
+    background: linear-gradient(180deg, rgba(255,255,255,0.08), rgba(0,0,0,0.2));
+    border:1px solid rgba(217,180,106,0.4); color:var(--gold-light); font-size:22px;
+    display:flex; align-items:center; justify-content:center; cursor:pointer; box-shadow:var(--shadow);
+    backdrop-filter: blur(4px); touch-action:manipulation;
+  }
+  #louisBtn:active{ transform:scale(0.92); }
+  .louis-tooltip{
+    position:fixed; bottom:80px; left:16px; z-index:56; max-width:260px;
+    background:rgba(250,244,230,0.97); color:var(--ink); border:1px solid var(--gold-deep);
+    padding:12px 14px; border-radius:12px; font-family:'Playfair Display',serif; font-style:italic; font-size:13px; line-height:1.5;
+    box-shadow:var(--shadow); opacity:0; transform:translateY(8px); transition: all .4s ease; pointer-events:none;
+  }
+  .louis-tooltip.show{ opacity:1; transform:translateY(0); }
+
+  /* ---------- olla de mama odie ---------- */
+  .gumbo-scene{ position:relative; width:min(80vw,220px); height:220px; display:flex; align-items:center; justify-content:center; touch-action:none; cursor:grab; }
+  .gumbo-pot{ font-size:100px; filter:drop-shadow(0 8px 14px rgba(0,0,0,.4)); pointer-events:none; }
+  .gumbo-steam{ position:absolute; top:6%; left:50%; transform:translateX(-50%); font-size:26px; opacity:.7; animation: steamRise 3s ease-in-out infinite; pointer-events:none; }
+  @keyframes steamRise{ 0%,100%{ transform:translateX(-50%) translateY(0); opacity:.5;} 50%{ transform:translateX(-50%) translateY(-10px); opacity:.9;} }
+  .gumbo-sparkle{ position:absolute; inset:0; pointer-events:none; }
+  .g-spark{ position:absolute; width:5px; height:5px; background:var(--gold-light); border-radius:50%; opacity:0; top:50%; left:50%; }
+  .g-spark.burst{ animation: gburst 0.9s ease-out forwards; }
+  @keyframes gburst{ 0%{ opacity:1; transform: translate(0,0) scale(1);} 100%{ opacity:0; transform: translate(var(--tx), var(--ty)) scale(0.3);} }
+  .gumbo-progress{ width:min(80vw,220px); height:6px; background:rgba(255,255,255,0.1); border-radius:4px; margin-top:18px; overflow:hidden; }
+  .gumbo-progress-fill{ height:100%; width:0%; background: linear-gradient(90deg, var(--gold-deep), var(--gold-light)); transition: width .15s ease; }
+  .gumbo-result{ margin-top:20px; max-width:400px; font-family:'Playfair Display',serif; font-style:italic; font-size:16px; color:var(--gold-light); opacity:0; transition: all .6s ease; }
+  .gumbo-result.show{ opacity:1; }
+
+  /* ---------- ray y evangeline fireflies ---------- */
+  .wish-field{ position:relative; width:min(92vw,480px); height:280px; }
+  .wish-fly{
+    position:absolute; width:16px; height:16px; border-radius:50%;
+    background: radial-gradient(circle, var(--gold-light), var(--gold-deep));
+    box-shadow:0 0 12px 4px rgba(242,223,174,0.7); cursor:pointer; touch-action:manipulation;
+    animation: wishFloat 5s ease-in-out infinite;
+  }
+  @keyframes wishFloat{ 0%,100%{transform:translateY(0);} 50%{transform:translateY(-16px);} }
+  .wish-fly.paused{ animation-play-state: paused; box-shadow:0 0 20px 8px rgba(242,223,174,0.95); }
+  .wish-bubble{
+    position:absolute; transform:translate(-50%,-100%); background:rgba(250,244,230,0.97); color:var(--ink);
+    padding:8px 12px; border-radius:10px; font-size:12.5px; max-width:190px; font-family:'Playfair Display',serif; font-style:italic;
+    box-shadow:var(--shadow); opacity:0; animation: bubbleUp 3.2s ease forwards; pointer-events:none; z-index:20;
+  }
+  @keyframes bubbleUp{ 0%{opacity:0; transform:translate(-50%,-80%);} 15%{opacity:1; transform:translate(-50%,-112%);} 82%{opacity:1;} 100%{opacity:0; transform:translate(-50%,-150%);} }
+
+  /* ---------- frog modal ---------- */
+  #frogModalOverlay{
+    position:fixed; inset:0; z-index:80; background:rgba(5,15,10,0.85); display:none;
+    align-items:center; justify-content:center; padding:20px; backdrop-filter: blur(3px);
+  }
+  #frogModalOverlay.show{ display:flex; }
+  .modal-box{
+    background: linear-gradient(180deg, rgba(23,59,40,0.98), rgba(12,33,24,0.98)); border:1px solid var(--gold-deep);
+    border-radius:20px; padding:30px 26px; max-width:380px; width:100%; text-align:center; position:relative;
+  }
+  .modal-close{ position:absolute; top:12px; right:14px; cursor:pointer; touch-action:manipulation; font-size:20px; color:var(--gold-light); background:none; border:none; }
+  .modal-emoji{ font-size:44px; margin-bottom:12px; }
+  .modal-text{ font-family:'Playfair Display',serif; font-style:italic; color:var(--gold-light); font-size:16px; line-height:1.6; }
+
+  /* ---------- closing ---------- */
+  #closing .script{ font-size: clamp(38px,9vw,56px); margin-bottom:10px; }
+  #closing .date-stamp{ margin-top:20px; font-size:13px; letter-spacing:3px; text-transform:uppercase; color:var(--gold-light); opacity:.75; }
+  .flourish{ width:120px; opacity:.8; margin:16px 0; }
+  .heart-row{ display:flex; gap:10px; margin-top:24px; font-size:20px; }
+
+  @media (max-width:420px){
+    .clock .box{ width:62px; padding:12px 2px; }
+    .clock .num{ font-size:24px; }
+    .menu-body{ padding:28px 22px 32px; }
+  }
+
+  /* evita cualquier estado :hover pegajoso en iOS/Safari: solo se activa si el dispositivo realmente soporta hover con puntero fino */
+  @media (hover:hover) and (pointer:fine){
+    #louisBtn:hover{ transform:scale(1.06); }
+    .frog-pad:hover{ filter:brightness(1.1); }
+  }
+</style>
+</head>
+<body>
+
+<!-- ============ COVER ============ -->
+<div id="cover" onclick="openCard()">
+  <div class="fireflies" id="coverFireflies"></div>
+  <svg class="lilypad" style="width:90px; top:8%; left:6%;" viewBox="0 0 100 100"><path d="M50 5 A45 45 0 1 1 15 82 Z" fill="#255a3d" opacity="0.6"/></svg>
+  <svg class="lilypad" style="width:70px; bottom:10%; right:8%; animation-delay:1.4s;" viewBox="0 0 100 100"><path d="M50 5 A45 45 0 1 1 12 78 Z" fill="#255a3d" opacity="0.55"/></svg>
+  <div class="cover-title">Un festejo estilo Nueva Orleans para</div>
+  <div class="script" style="font-size:42px;">Romi</div>
+  <div class="seal">🐸</div>
+  <div class="tap-text">Toca para entrar al pantano</div>
+</div>
+
+<!-- ============ MODAL: BROMA DEL SAPO ============ -->
+<div id="frogModalOverlay" onclick="if(event.target===this) closeFrogModal()">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeFrogModal()">✕</button>
+    <div class="modal-emoji">🐸</div>
+    <div class="modal-text">¡Oye! ¡La magia falló, sigo siendo un sapo! 🐸 Pero bueno... ¡Felices 21! Al menos conseguí que sonrieras un poquito.</div>
+  </div>
+</div>
+
+<!-- ============ LOUIS EASTER EGG (fijo) ============ -->
+<button id="louisBtn" onclick="playLouis()" title="???">🎺</button>
+<div class="louis-tooltip" id="louisTooltip">Louis dice que con tu talento ya estás lista para tocar con los grandes. ¡A romperla!</div>
+
+<!-- ============ APP ============ -->
+<div id="app">
+
+  <!-- HERO -->
+  <section id="hero">
+    <div class="fireflies" id="heroFireflies"></div>
+    <svg class="lilypad" style="width:110px; top:6%; left:-4%;" viewBox="0 0 100 100"><path d="M50 5 A45 45 0 1 1 15 82 Z" fill="#255a3d" opacity="0.55"/></svg>
+    <svg class="lilypad" style="width:130px; bottom:4%; right:-6%; animation-delay:2s;" viewBox="0 0 100 100"><path d="M50 5 A45 45 0 1 1 12 78 Z" fill="#255a3d" opacity="0.5"/></svg>
+    <svg class="crown-top" viewBox="0 0 64 64" fill="none">
+      <path d="M8 30 L14 18 L22 26 L32 12 L42 26 L50 18 L56 30 L52 46 L12 46 Z" fill="url(#gGold)"/>
+      <circle cx="14" cy="18" r="3" fill="url(#gGold)"/><circle cx="32" cy="12" r="3.6" fill="url(#gGold)"/><circle cx="50" cy="18" r="3" fill="url(#gGold)"/>
+      <defs><linearGradient id="gGold" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#f2dfae"/><stop offset="100%" stop-color="#b98f3f"/></linearGradient></defs>
+    </svg>
+    <div class="eyebrow">Nueva Orleans se prepara para celebrar</div>
+    <div class="script name-script">Romi</div>
+    <div class="big-number">21</div>
+    <p class="hero-sub">Hoy el pantano entero saca el jazz, el gumbo y las luces: cumples 21 y te los ganaste con muchísimo estilo.</p>
+    <div class="scroll-cue"><span>desliza</span><span class="chevron">⌄</span></div>
+  </section>
+
+  <!-- HOY ES EL DÍA -->
+  <section id="countdown" class="reveal">
+    <div class="fireflies" id="cdFireflies"></div>
+    <h2 class="section-title">¡Hoy es el gran día!</h2>
+    <p class="section-sub">4 de agosto · hoy todo Nueva Orleans brinda por ti</p>
+    <div class="today-badge">
+      <div class="today-emoji">🎂</div>
+      <div class="today-text">21 años de pura magia</div>
+    </div>
+    <p class="elapsed-caption">faltan para las 10:00 AM · hora de Costa Rica</p>
+    <div class="clock" id="clockBoxes">
+      <div class="box"><div class="num" id="cd-hours">00</div><div class="lbl">Horas</div></div>
+      <div class="box"><div class="num" id="cd-min">00</div><div class="lbl">Min</div></div>
+      <div class="box"><div class="num" id="cd-sec">00</div><div class="lbl">Seg</div></div>
+    </div>
+    <div class="countdown-done" id="cdDone">¡Ya es la hora! 🎉</div>
+    <button class="confetti-btn" onclick="burstConfetti()">🎉 Suelta más confeti</button>
+  </section>
+
+  <!-- TIANA'S PALACE MENU -->
+  <section id="menu" class="reveal">
+    <div class="menu-card">
+      <div class="menu-header">
+        <div class="est">Establecimiento estrella · desde hoy</div>
+        <h2>Tiana's Palace</h2>
+        <div class="sub">Menú especial de cumpleaños</div>
+      </div>
+      <div class="menu-body">
+        <p>Feliz cumpleaños, Romi. No sé bien cómo empezar esta carta, pero sí sé que quería que fuera distinta a cualquier otra que hayas recibido. Admiro tantas cosas de ti que a veces no me alcanzan las palabras: tu manera de ser, tan tuya, tan honesta. La forma en que luchas por lo que quieres sin rendirte, aunque el camino se ponga difícil — eso, más que nada, es lo que más respeto de ti. Tu sonrisa, que ilumina cualquier lugar donde estés. Tus ojos, que dicen mucho más de lo que crees. Hasta en los detalles más pequeños — tus manos, tu voz, la forma en que te mueves por el mundo — encuentro algo que me hace quererte más cada día.</p>
+        <p style="margin-top:18px;">Hoy cumples 21 y quiero que sepas que, para mí, esta carta también marca un antes y un después. No hace falta decir más por ahora, solo que quería que lo supieras, aunque sea así. Como en tu historia favorita, a veces la magia no llega de golpe: llega poco a poco, con paciencia, con cariño de verdad. Y yo quiero estar ahí para verla crecer, contigo.</p>
+        <div class="menu-sign">— Diego</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- LA BROMA DEL SAPO -->
+  <section id="frog" class="reveal">
+    <h2 class="section-title">La magia del pantano</h2>
+    <p class="section-sub">Toca al sapito dos veces para ver la magia de Disney ✨</p>
+    <div class="pond-scene">
+      <div class="water"></div>
+      <div class="frog-pad" id="frogPad">🐸</div>
+    </div>
+    <div class="pond-hint" id="pondHint">psst... inténtalo con doble toque</div>
+  </section>
+
+  <!-- OLLA DE MAMA ODIE -->
+  <section id="gumbo" class="reveal">
+    <h2 class="section-title">La olla de Mamá Odie</h2>
+    <p class="section-sub">Mamá Odie dice que debes "indagar en el fondo". Desliza el dedo para revolver el Gumbo.</p>
+    <div class="gumbo-scene" id="gumboScene">
+      <div class="gumbo-steam">💨</div>
+      <div class="gumbo-pot">🍲</div>
+      <div class="gumbo-sparkle" id="gumboSparkle"></div>
+    </div>
+    <div class="gumbo-progress"><div class="gumbo-progress-fill" id="gumboFill"></div></div>
+    <p class="gumbo-result" id="gumboResult">¡Sacaste la Salsa Picante! Significa que este año vas a resolver cualquier problema con muchísima actitud y estilo.</p>
+  </section>
+
+  <!-- RAY Y EVANGELINE -->
+  <section id="wishes" class="reveal">
+    <h2 class="section-title">Ray y Evangeline</h2>
+    <p class="section-sub">Toca una luciérnaga y mira lo que tiene para decirte</p>
+    <div class="wish-field" id="wishField"></div>
+  </section>
+
+  <!-- CLOSING -->
+  <section id="closing" class="reveal">
+    <div class="fireflies" id="closeFireflies"></div>
+    <div class="script">Feliz cumpleaños</div>
+    <svg class="flourish" viewBox="0 0 200 40" fill="none">
+      <path d="M2 20 Q50 2 100 20 T198 20" stroke="#d9b46a" stroke-width="1.4" opacity="0.7"/>
+      <circle cx="100" cy="20" r="3.5" fill="#d9b46a"/>
+    </svg>
+    <div class="date-stamp">4 de agosto · 21 años</div>
+    <div class="heart-row">🐸✨🎺🍲🪶</div>
+  </section>
+
+</div>
+
+<script>
+/* =========================================================
+   AUDIO — trompeta de jazz sintetizada (Web Audio API, sin archivos externos)
+   ========================================================= */
+const JazzAudio = (() => {
+  let ctx;
+  function init(){ if(!ctx) ctx = new (window.AudioContext||window.webkitAudioContext)(); }
+  function trumpetNote(freq, time, dur, gainVal){
+    const o = ctx.createOscillator();
+    o.type='sawtooth';
+    o.frequency.value = freq;
+    const filter = ctx.createBiquadFilter();
+    filter.type='lowpass';
+    filter.frequency.value = 1800;
+    const g = ctx.createGain();
+    g.gain.setValueAtTime(0, time);
+    g.gain.linearRampToValueAtTime(gainVal, time+0.03);
+    g.gain.exponentialRampToValueAtTime(0.001, time+dur);
+    o.connect(filter); filter.connect(g); g.connect(ctx.destination);
+    o.start(time); o.stop(time+dur+0.05);
+  }
+  function playRiff(){
+    init();
+    if(ctx.state==='suspended') ctx.resume();
+    const t = ctx.currentTime;
+    const notes = [
+      {f:392.00, at:0,    d:0.18},
+      {f:523.25, at:0.16, d:0.16},
+      {f:659.25, at:0.30, d:0.16},
+      {f:783.99, at:0.44, d:0.35}
+    ];
+    notes.forEach(n=> trumpetNote(n.f, t+n.at, n.d, 0.22));
+  }
+  return { playRiff };
+})();
+
+/* =========================================================
+   COVER (tap to open)
+   ========================================================= */
+function openCard(){
+  document.body.classList.add('opened');
+  burstConfetti();
+  window.scrollTo(0,0);
+}
+function burstConfetti(){
+  const colors = ['#d9b46a','#f2dfae','#255a3d','#5a3d7a'];
+  for(let i=0;i<60;i++){
+    const p = document.createElement('div');
+    p.className='confetti-piece shape';
+    p.style.left = Math.random()*100+'vw';
+    p.style.background = colors[Math.floor(Math.random()*colors.length)];
+    p.style.animationDuration = (2.4+Math.random()*1.8)+'s';
+    p.style.borderRadius = Math.random()>0.5 ? '50%':'2px';
+    document.body.appendChild(p);
+    setTimeout(()=>p.remove(), 4600);
+  }
+}
+function burstBeignets(){
+  const emojis = ['🥐','🍩'];
+  for(let i=0;i<40;i++){
+    const p = document.createElement('div');
+    p.className='confetti-piece emoji';
+    p.textContent = emojis[Math.floor(Math.random()*emojis.length)];
+    p.style.left = Math.random()*100+'vw';
+    p.style.animationDuration = (2.6+Math.random()*1.8)+'s';
+    document.body.appendChild(p);
+    setTimeout(()=>p.remove(), 4800);
+  }
+}
+
+/* =========================================================
+   FIREFLIES (decorative, ambient)
+   ========================================================= */
+function spawnFireflies(containerId, count){
+  const el = document.getElementById(containerId);
+  if(!el) return;
+  for(let i=0;i<count;i++){
+    const f = document.createElement('div');
+    f.className='firefly';
+    f.style.left = (Math.random()*100)+'%';
+    f.style.bottom = (Math.random()*60)+'%';
+    const dur = 7+Math.random()*6, delay = Math.random()*8;
+    f.style.animationDuration = dur+'s, '+(2+Math.random()*2)+'s';
+    f.style.animationDelay = delay+'s, '+(Math.random()*2)+'s';
+    el.appendChild(f);
+  }
+}
+['coverFireflies','heroFireflies','cdFireflies','closeFireflies'].forEach(id=>spawnFireflies(id,14));
+
+/* =========================================================
+   CUENTA REGRESIVA HASTA LAS 10:00 AM (HORA DE COSTA RICA, UTC-6)
+   ========================================================= */
+function updateCountdown(){
+  const now = new Date();
+  // Costa Rica no usa horario de verano: siempre UTC-6.
+  // 10:00 AM hora de Costa Rica = 16:00 UTC
+  const target = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(), 16, 0, 0));
+  let diff = target - now;
+  if(diff <= 0){
+    document.getElementById('clockBoxes').style.display='none';
+    document.getElementById('cdDone').style.display='block';
+    return;
+  }
+  const h = Math.floor(diff/(1000*60*60));
+  const m = Math.floor((diff/(1000*60))%60);
+  const s = Math.floor((diff/1000)%60);
+  document.getElementById('cd-hours').textContent = String(h).padStart(2,'0');
+  document.getElementById('cd-min').textContent = String(m).padStart(2,'0');
+  document.getElementById('cd-sec').textContent = String(s).padStart(2,'0');
+}
+updateCountdown();
+setInterval(updateCountdown, 1000);
+
+/* =========================================================
+   LA BROMA DEL SAPO — doble toque robusto en iOS
+   ========================================================= */
+function frogJoke(){
+  const pad = document.getElementById('frogPad');
+  pad.classList.remove('jump');
+  void pad.offsetWidth;
+  pad.classList.add('jump');
+  document.getElementById('frogModalOverlay').classList.add('show');
+  burstBeignets();
+}
+function closeFrogModal(){
+  document.getElementById('frogModalOverlay').classList.remove('show');
+}
+function bindDoubleTap(el, handler){
+  let lastTap = 0;
+  el.addEventListener('touchend', function(e){
+    const now = Date.now();
+    if(now - lastTap < 350){
+      e.preventDefault();
+      handler();
+    }
+    lastTap = now;
+  }, {passive:false});
+  el.addEventListener('dblclick', function(e){
+    e.preventDefault();
+    handler();
+  });
+}
+bindDoubleTap(document.getElementById('frogPad'), frogJoke);
+
+/* =========================================================
+   LOUIS EASTER EGG
+   ========================================================= */
+function playLouis(){
+  JazzAudio.playRiff();
+  const tip = document.getElementById('louisTooltip');
+  tip.classList.add('show');
+  setTimeout(()=>tip.classList.remove('show'), 4500);
+}
+
+/* =========================================================
+   LA OLLA DE MAMA ODIE — arrastre para revolver
+   ========================================================= */
+let gumboProgress = 0;
+let gumboDone = false;
+let gumboDragging = false;
+let lastX=0, lastY=0;
+
+function gumboStart(x,y){
+  gumboDragging = true; lastX=x; lastY=y;
+}
+function gumboMove(x,y){
+  if(!gumboDragging || gumboDone) return;
+  const dist = Math.hypot(x-lastX, y-lastY);
+  lastX=x; lastY=y;
+  if(dist > 2){
+    gumboProgress = Math.min(100, gumboProgress + dist*0.6);
+    document.getElementById('gumboFill').style.width = gumboProgress+'%';
+    if(gumboProgress >= 100){
+      gumboDone = true;
+      gumboSparkles();
+      setTimeout(()=> document.getElementById('gumboResult').classList.add('show'), 250);
+    }
+  }
+}
+function gumboEnd(){ gumboDragging = false; }
+function gumboSparkles(){
+  const box = document.getElementById('gumboSparkle');
+  box.innerHTML='';
+  for(let i=0;i<16;i++){
+    const s = document.createElement('div');
+    s.className='g-spark burst';
+    const angle = (Math.PI*2*i)/16;
+    const dist = 50 + Math.random()*40;
+    s.style.setProperty('--tx', Math.cos(angle)*dist+'px');
+    s.style.setProperty('--ty', Math.sin(angle)*dist+'px');
+    s.style.animationDelay = (Math.random()*0.15)+'s';
+    box.appendChild(s);
+  }
+}
+(function initGumbo(){
+  const scene = document.getElementById('gumboScene');
+  scene.addEventListener('mousedown', e=> gumboStart(e.clientX, e.clientY));
+  window.addEventListener('mousemove', e=>{ if(gumboDragging) gumboMove(e.clientX, e.clientY); });
+  window.addEventListener('mouseup', gumboEnd);
+  scene.addEventListener('touchstart', e=>{
+    const t = e.touches[0]; gumboStart(t.clientX, t.clientY);
+  }, {passive:true});
+  scene.addEventListener('touchmove', e=>{
+    if(gumboDragging){ e.preventDefault(); const t = e.touches[0]; gumboMove(t.clientX, t.clientY); }
+  }, {passive:false});
+  scene.addEventListener('touchend', gumboEnd);
+})();
+
+/* =========================================================
+   RAY Y EVANGELINE — luciérnagas interactivas
+   ========================================================= */
+const rayMessages = [
+  '¡Brillas más que la mismísima Evangeline!',
+  'Tienes más enfoque que Tiana trabajando doble turno.',
+  'Tu sonrisa ilumina cualquier pantano, hasta este.',
+  'Luchas por lo que quieres sin rendirte, y eso es hermoso.',
+  'Hoy el pantano entero celebra tus 21.',
+  'Ojalá este año te traiga tanta magia como la que tú regalas.',
+  'Eres de esas personas que hacen que todo se sienta mejor.',
+  'Ni todas las luciérnagas juntas brillan como tú.',
+  'Feliz cumpleaños, Romi. Que este año sea puro estilo Nueva Orleans para ti.'
+];
+function buildWishField(){
+  const field = document.getElementById('wishField');
+  const total = rayMessages.length;
+  for(let i=0;i<total;i++){
+    const fly = document.createElement('div');
+    fly.className='wish-fly';
+    fly.style.left = (8+Math.random()*84)+'%';
+    fly.style.top = (8+Math.random()*76)+'%';
+    fly.style.animationDelay = (Math.random()*3)+'s';
+    const message = rayMessages[i];
+    const reveal = function(e){
+      if(e) e.preventDefault();
+      if(fly.dataset.busy) return;
+      fly.dataset.busy = '1';
+      fly.classList.add('paused');
+      const bubble = document.createElement('div');
+      bubble.className='wish-bubble';
+      bubble.textContent = message;
+      bubble.style.left = fly.style.left;
+      bubble.style.top = fly.style.top;
+      field.appendChild(bubble);
+      setTimeout(()=>{ bubble.remove(); fly.classList.remove('paused'); delete fly.dataset.busy; }, 2400);
+    };
+    fly.addEventListener('click', reveal);
+    fly.addEventListener('touchstart', reveal, {passive:false});
+    field.appendChild(fly);
+  }
+}
+buildWishField();
+
+/* =========================================================
+   SCROLL REVEAL
+   ========================================================= */
+const observer = new IntersectionObserver((entries)=>{
+  entries.forEach(entry=>{
+    if(entry.isIntersecting){ entry.target.classList.add('in'); }
+  });
+}, {threshold:0.2});
+document.querySelectorAll('.reveal').forEach(el=>observer.observe(el));
+</script>
+</body>
+</html>
